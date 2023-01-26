@@ -9,6 +9,14 @@ group = 'com.green'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+war {
+  enabled = true
+  archiveName("greengames.war")
+}
+bootWar { 
+  enabled = false 
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -17,9 +25,11 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
+	implementation 'com.github.shin285:KOMORAN:3.3.4'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
