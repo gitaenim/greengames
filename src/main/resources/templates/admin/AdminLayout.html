@@ -84,7 +84,7 @@
    			</ul>
    			<br>
    			<div style="text-align: center;">
-   				<a href="/adminlist">관리자페이지</a>
+   				<a href="/adminlist" th:if="${#authentication.principal.admin}">관리자페이지</a>
    			</div>
    		</div>
    		<aside id="chat-bot">
