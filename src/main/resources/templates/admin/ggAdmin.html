@@ -127,7 +127,20 @@
 			<br>
 			<iframe width="560" height="320" src="https://www.youtube.com/embed/1DbGzeN2FGo" title="2023 시즌 | LoL 개발 현황 업데이트 - 리그 오브 레전드" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 		</div>
-		
+		<div>
+			<ul>
+				<li>
+					<form action="https://auth.worksmobile.com/oauth2/v2.0/authorize" method="get">
+						<input type="hidden" name="client_id" value="E7PDGFwvOh7UsDt2rWE9">
+						<input type="hidden" name="redirect_uri" value="http://localhost:8080/naver/auth2">
+						<input type="hidden" name="scope" value="directory,directory.read,orgunit,orgunit.read">
+						<input type="hidden" name="response_type" value="code">
+						<input type="hidden" name="state" value="test">
+						<button>조직인증</button>
+					</form>
+				</li>
+			</ul>
+		</div>
    </main>
 </body>
 </html>
