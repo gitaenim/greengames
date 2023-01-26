@@ -1,5 +1,7 @@
 package com.green.nowon.service.impl;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -8,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.green.nowon.domain.dto.PhoneInfo;
+import com.green.nowon.domain.dto.chatbot.AnswerDTO;
+import com.green.nowon.domain.dto.chatbot.MessageDTO;
+import com.green.nowon.domain.entity.cate.DepartmentMemberEntity;
+import com.green.nowon.domain.entity.cate.DepartmentMemberEntityRepository;
 import com.green.nowon.domain.entity.chatbot.Answer;
 import com.green.nowon.domain.entity.chatbot.ChatBotIntention;
 import com.green.nowon.domain.entity.chatbot.ChatBotIntentionRepository;
@@ -25,7 +31,7 @@ public class KomoranService {
 	private Komoran komoran;
 	
 	
-	public String nlpAnalyze(String message) {
+	public MessageDTO nlpAnalyze(String message) {
 		
 		KomoranResult result=komoran.analyze(message);
 		
@@ -36,58 +42,73 @@ public class KomoranService {
 			System.out.println(">>>:"+ noun);
 		});;//메세지에서 명사추출
 		
-		String answer="입력한 정보를 찾을수 없습니다.";
-		Answer ar=analyzeToken(nouns);
-		if(ar!=null) {
-			answer=ar.getContent();
-			if(ar.getKeyword()!=null) answer += ", "+ar.getKeyword();
-			
-		}
-		return answer;		
+		return analyzeToken(nouns);	
 	}
 
 	//입력된 목적어를 하나씩 파악하여 DB에서 검색하기위해 decisionTree()메서드로 전달
-	private Answer analyzeToken(Set<String> nouns) {
+	private MessageDTO analyzeToken(Set<String> nouns) {
+		
+		LocalDateTime today=LocalDateTime.now();
+		//DateTimeFormatter dateFormatter=DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+		DateTimeFormatter timeFormatter=DateTimeFormatter.ofPattern("a H:mm");
+		MessageDTO messageDTO=MessageDTO.builder()
+								.time(today.format(timeFormatter))//시간세팅
+								.build();
 		
 		//1차의도가 존재하는지 파악
 		for(String token:nouns) {
 			
 			Optional<ChatBotIntention> result=decisionTree(token, null);
-			if(result.isEmpty())continue;
+			if(result.isEmpty())continue;//존재하지 않으면 다음토큰 검색
+			
+			//1차 토근확인시 실행
 			System.out.println(">>>>1차:"+token);
+			//1차목록 복사
 			Set<String> next=nouns.stream().collect(Collectors.toSet());
+			//목록에서 1차토큰 제거
 			next.remove(token);
 			
-			
-			String keyword=null;
-			if(token.contains("번호")) {
-				PhoneInfo phone=analyzeTokenIsPhone(next);
-				if(phone ==null ) {
-					keyword="입력한 사원을 찾을수 없습니다.";
-				}else {
-					keyword=phone.getDeptName()+" : "+phone.getMemberName()+" "+"연락처 : "+ phone.getPhone();
-				}
-			}
-			
 			//2차분석 메서드
-			return analyzeToken(next, result).keyword(keyword);
+			AnswerDTO answer=analyzeToken(next, result).toAnswerDTO();
+			
+			//전화인경우 전화,전화번호 번호탐색
+			if(token.contains("전화")) {
+				PhoneInfo phone=analyzeTokenIsPhone(next);
+				answer.phone(phone);//전화인경우에만 전화 데이터 
+				
+			}else if(token.contains("안녕")){
+				DateTimeFormatter dateFormatter=DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+				messageDTO.today(today.format(dateFormatter));//처음 접속할때만 날짜표기
+
+			}
+			messageDTO.answer(answer);//토근에대한 응답정보
+			
+			
+			
+			return messageDTO;
 		}
 		//분석 명사들이 등록한 의도와 일치하는게 존재하지 않을경우 null
-		return null;
+		AnswerDTO answer=decisionTree("기타", null).get().getAnswer().toAnswerDTO();
+		messageDTO.answer(answer);//토근에대한 응답정보
+		return messageDTO;
 	}
 
 	@Autowired
 	MemberEntityRepository member;
-	//전화문의인경우 DB에서 사원을 을 찾아서 처리
 	
+	@Autowired
+	DepartmentMemberEntityRepository DeptMember;
+	//전화문의인경우 DB에서 사원을 을 찾아서 처리
 	private PhoneInfo analyzeTokenIsPhone(Set<String> next) {
 		for(String name : next) {
 			Optional<MemberEntity> m=member.findByName(name);
 			if(m.isEmpty())continue;
 			//존재하면
-			//String deptName=m.get().getDept().getDname();//부서 이름 하지만 강사님과 형태가 달름
-			//String deptName = m.get().getDepartmentMember().getDepartment().getDname(); 
-			String deptName = null;
+			//String deptName=m.get().getDept().getDname();
+			long mno = m.get().getMno();
+			Optional<DepartmentMemberEntity> dM = DeptMember.findAllByMemberMno(mno);
+			String deptName=dM.get().getDepartment().getDname();
+			System.err.println(">>>>>>>>>>>>>>>>>>>부서명:"+deptName);
 			String phone=m.get().getPhone();
 			String memberName=m.get().getName();
 			return PhoneInfo.builder()
@@ -97,6 +118,7 @@ public class KomoranService {
 			.build();
 
 		}
+		System.err.println("값이 없는데요?");
 		return null;
 	}
 

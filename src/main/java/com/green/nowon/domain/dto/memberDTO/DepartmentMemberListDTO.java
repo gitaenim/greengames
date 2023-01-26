@@ -18,6 +18,7 @@ public class DepartmentMemberListDTO {
 	private String profileUrl;
 	
 	//private String pName;
+	private String dName;	
 	
 	public DepartmentMemberListDTO(MemberEntity e){
 		this.mno=e.getMno();
@@ -29,8 +30,10 @@ public class DepartmentMemberListDTO {
 		if(e.getProfile()!=null) {
 			this.profileUrl=e.getProfile().getUrl()+e.getProfile().getNewName();
 		}
+		
 	}
 	public DepartmentMemberListDTO(DepartmentMemberEntity e) {
 		this(e.getMember());
+		this.dName=e.getDepartment().getDname();
 	}
 }

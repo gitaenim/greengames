@@ -12,7 +12,7 @@
 
 </head>
 <body class="flex">
-	<main style="background-image: url('/image/logo/main.JPG'); background-position: center; background-repeat: no-repeat; width: 100%; height: auto;">
+	<main>
 		<div>
 			<input id="mno" type="hidden"
 				th:value="${#authentication.principal.mno}">
@@ -21,63 +21,6 @@
 					<h2 class="mypage-title">
 						<strong>[[${detail.name}]]</strong> 님 어서오세요.
 					</h2>
-				</div>
-				<div style="text-align: right;">
-					<div
-						style="width: 800px; position: relative; left: 900px; top: 40px;">
-						<div class="flex">
-							<div class="wrap">
-								<p>내가 작성한 공지사항</p>
-								<div>
-									<table>
-										<tr>
-											<td>No</td>
-											<td>제목</td>
-											<td>조회수</td>
-											<td>작성자</td>
-											<td>작성일</td>
-										</tr>
-										<tr th:each="dto : ${list}"
-											th:if="${#authentication.name == dto.writerId}">
-											<!--유저가 내가 작성한것만 확인가능-->
-											<td th:text="${dto.bno}">No</td>
-											<td><a th:href="|/notice-boards/${dto.bno}|">[[${dto.title}]]</a></td>
-											<td th:text="${dto.readCount}">조회수</td>
-											<td>[[${dto.writer}]]</td>
-											<td><span
-												
-												th:text="${dto.updatedDate.toLocalDate()}">날짜</span></td>
-										</tr>
-										
-									</table>
-								</div>
-							</div>
-							<div class="wrap">
-								<p>내가 작성한 자유게시물</p>
-								<div>
-									<table>
-										<tr>
-											<td>No</td>
-											<td>제목</td>
-											<td>조회수</td>
-											<td>작성자</td>
-											<td>작성일</td>
-										</tr>
-										<tr th:each="dto : ${list2}">
-											<td th:text="${dto.bno}">No</td>
-											<td><a th:href="|/boards/${dto.bno}|">[[${dto.title}]]</a></td>
-											<td th:text="${dto.readCount}">조회수</td>
-											<td th:text="${writerName}"></td>
-											<td>
-												<span th:text="${dto.updatedDate.toLocalDate()}">날짜</span>
-											</td>
-										</tr>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-
 				</div>
 				<div class="mypage-info">
 					<div class="mypage-img">
@@ -88,23 +31,24 @@
 							th:src="${detail.profileUrl}">
 					</div>
 					<br>
+					<div>
 					<div class="member-info">
 						<form>
 							<ul>
 								<li>
-									<label for="name">이름 - </label> <span>[[${detail.name}]]</span>
+									<label for="name">이름   </label> <span>[[${detail.name}]]</span>
 								</li>
 								<li>
-									<label for="name">사번 - </label> <span>[[${detail.mno}]]</span>
+									<label for="name">사번   </label> <span>[[${detail.mno}]]</span>
 								</li>
 								<li>
-									<label for="name">전화번호 - </label> <span>[[${detail.phone}]]</span>
+									<label for="name">전화번호   </label> <span>[[${detail.phone}]]</span>
 								</li>
 								<li>
-									<label for="name">id=email - </label> <span>[[${detail.id}]]</span>
+									<label for="name">ID (Email)   </label> <span>[[${detail.id}]]</span>
 								</li>
 								<li>
-									<label for="name">직책 - </label> <span>[[${detail.pname}]]</span>
+									<label for="name">직책   </label> <span>[[${detail.pname}]]</span>
 								</li>
 							</ul>
 						</form>
@@ -126,13 +70,26 @@
 						</li>
 					</ul>
 					<div style="text-align: center;">
-						<a th:href="|/mypage/${mno}|"><button>개인정보수정</button></a>
+						<a th:href="|/mypage/${mno}|"><button class="btn">개인정보수정</button></a>
+					</div>
+				</div>
+				</div>
+			<div class="approval-1">
+					<div class="approval-2">
+						<div class="approval-3">
+							<div>
+								<p class="m-tit" style="padding-bottom: 5px; margin-bottom:5px; border-bottom: 1px solid #037e51;">전자결재</p>
+							</div>
+							<div class="text-link">
+								<a class="appro" href="/approval" style="display: inline-block; margin-right: 30px; margin-bottom: 10px;">업무</a> <a  class="appro" href="/approval/vacation">휴가/병가</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="salary-info">
-			<p>이번달 내 급여정보</p>
+			<p class="m-tit">이번달 내 급여정보</p>
 			<table>
 				<thead>
 					<!-- thymleaf사용 -->
@@ -159,16 +116,54 @@
 				</tbody>
 			</table>
 		</div>
-
-		<div class="approval-1">
-			<div class="approval-2">
-				<div class="approval-3">
-					<div style="">
-						<p>전자결재</p>
-					</div>
-					<div class="text-link">
-						<a href="/approval">업무</a> <a href="/approval/vacation">휴가/병가</a>
-					</div>
+		<div style="margin: 5%;">
+			<div class="wrap fir-board">
+				<p class="m-tit">My 공지사항</p>
+				<div>
+					<table class="board">
+						<tr class="board-title">
+							<td>No</td>
+							<td>제목</td>
+							<td>조회수</td>
+							<td>작성자</td>
+							<td>작성일</td>
+						</tr>
+						<tr th:each="dto : ${list}"
+							th:if="${#authentication.name == dto.writerId}">
+							<!--유저가 내가 작성한것만 확인가능-->
+							<td th:text="${dto.bno}">No</td>
+							<td><a th:href="|/notice-boards/${dto.bno}|">[[${dto.title}]]</a></td>
+							<td th:text="${dto.readCount}">조회수</td>
+							<td>[[${dto.writer}]]</td>
+							<td><span
+								
+								th:text="${dto.updatedDate.toLocalDate()}">날짜</span></td>
+						</tr>
+						
+					</table>
+				</div>
+			</div>
+			<div class="wrap sec-board">
+				<p class="m-tit">My 자유게시물</p>
+				<div>
+					<table class="board">
+						<tr class="board-title">
+							<td>No</td>
+							<td>제목</td>
+							<td>조회수</td>
+							<td>작성자</td>
+							<td>작성일</td>
+						</tr>
+						<tr th:each="dto : ${list2}">
+							<td th:text="${dto.bno}">No</td>
+							<td><a th:href="|/boards/${dto.bno}|">[[${dto.title}]]</a></td>
+							<td th:text="${dto.readCount}">조회수</td>
+							<td th:text="${writerName}"></td>
+							<td>
+								<span th:text="${dto.updatedDate.toLocalDate()}">날짜</span>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>

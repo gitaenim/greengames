@@ -33,6 +33,10 @@ function disconnect() {
     setConnectStated(false);
     console.log("Disconnected");
 }
+function hideconnect() {
+	$("#chat-disp").hide();
+	$("#btn-chat-open").show();
+}
 //버튼클릭시 접속
 function connect() {
 	sendMessage("안녕");

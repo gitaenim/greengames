@@ -32,7 +32,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.green.nowon.domain.dto.memberDTO.MemberUpdateDTO;
 import com.green.nowon.domain.entity.BaseDateEntity;
-import com.green.nowon.domain.entity.cate.DepartmentMemberEntity;
 import com.green.nowon.domain.entity.cate.PositionEntity;
 import com.green.nowon.security.MyRole;
 
@@ -108,9 +107,6 @@ public class MemberEntity extends BaseDateEntity{
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<MyRole> roles = new HashSet<>();
 
-//	@OneToMany(mappedBy = "member")
-//	private DepartmentMemberEntity departmentMember;
-	
 	public MemberEntity addRole(MyRole role) {
 		roles.add(role);
 		return this;
@@ -120,16 +116,16 @@ public class MemberEntity extends BaseDateEntity{
 		this.phone = dto.getPhone();
 		return this;
 	}
-	/**
-	 * 대표이미지 없는데 없으면 @builder가 안먹힘
-	 * @return
-   * optional=false를 사용해서 강제로 하나의 데이터만 가져와서 사용
-	 */ 
+//	/**
+//	 * 대표이미지 없는데 없으면 @builder가 안먹힘
+//	 * @return
+//   * optional=false를 사용해서 강제로 하나의 데이터만 가져와서 사용
+//	 */ 
 //	public ProfileEntity defImg() {
 //		for(ProfileEntity pimg:profile) {
 //			return pimg;
 //		}
-//		return null;
+//		return profile;
 //	}
 	
 }

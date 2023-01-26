@@ -29,7 +29,7 @@
     		data:formData,
     		success:function(map){ /* 서버에 업로드이후 url을 리턴 -> 파라미터에 전달 */
     			console.log(map);
-    			alert(map.url);
+    			//alert(map.url);
     			$(el).siblings(".img").css("background-image", "url("+map.url+")");
     			$(el).siblings(".newName").val(map.newName);
     			$(el).siblings(".orgName").val(map.orgName);
