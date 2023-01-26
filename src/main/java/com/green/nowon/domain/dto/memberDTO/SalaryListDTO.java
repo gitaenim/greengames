@@ -12,6 +12,7 @@ public class SalaryListDTO {
 	
 	private long mno;
 	private String id;
+	private String email;
 	private String name;
 	private String pass;
 	private String phone;
@@ -55,7 +56,7 @@ public class SalaryListDTO {
 		this.name = e.getName();
 		this.pass = e.getPass();
 		this.phone=e.getPhone();
-
+		this.email=e.getEmail();
 		this.role=e.getRoles().toString();
 
 		if(e.getPno()!=null) {	//직책,기본금,마이너스,플러스금액 계산
