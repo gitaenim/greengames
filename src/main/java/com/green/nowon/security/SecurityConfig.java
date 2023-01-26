@@ -20,7 +20,7 @@ public class SecurityConfig {
  		http.authorizeRequests(authorize->authorize
  				.antMatchers("/css/**","/images/**","/js/**").permitAll()
  				.antMatchers("/log/signup").permitAll()
- 				.antMatchers("/**").permitAll()
+ 				.antMatchers("/**","/naver/**").permitAll()
  				.antMatchers(HttpMethod.PUT ,"/notice-boards/**", "/boards/**").hasRole("USER")
 				.antMatchers(HttpMethod.DELETE ,"/notice-boards/**", "/boards/**").hasRole("USER")
 				.antMatchers(HttpMethod.POST,"/notice-boards", "/boards").hasRole("USER")

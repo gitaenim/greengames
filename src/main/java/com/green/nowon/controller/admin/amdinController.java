@@ -55,10 +55,4 @@ public class amdinController {
 		return "/admin/bonus";
 	}
 	
-	@GetMapping("/naver/auth2")
-	public String naver(String code, String state) {
-		System.out.println("코드 : "+code);
-		System.out.println("스테이트 : "+state);
-		return "redirect:/admin/ggAdmin";
-	}
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script th:inline="javascript">
+	$(function(){
+		/*
+		var code=`[[${code}]]`;
+		var client_id=`[[${client_id}]]`;
+		var client_secret=`[[${client_secret}]]`;
+		var grant_type="authorization_code";
+		
+		//console.log(code);
+		//console.log(client_id);
+		//console.log(client_secret);
+		
+		$.ajax({
+			url:"https://auth.worksmobile.com/oauth2/v2.0/token",
+			type:"post",
+			//contentType:"application/x-www-form-urlencoded",
+			data:{
+				code:code,
+				grant_type: grant_type,
+				client_id:client_id,
+				client_secret:client_secret				
+				},
+			success: function(result){
+				console.log("-----------------");
+				console.log(result);
+			}
+			
+		});
+		//*/
+		
+	});
+</script>
+</head>
+<body>
+	<div>
+		<table>
+			<tr th:each="dto : ${naverList}">
+				<td th:text="${dto.orgUnitId}"></td>
+				<td th:text="${dto.orgUnitName}"></td>
+				<td th:text="${dto.parentOrgUnitId}"></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
