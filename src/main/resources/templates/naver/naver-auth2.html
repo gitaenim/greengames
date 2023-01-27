@@ -63,13 +63,13 @@
 <body>
 	<div>
 		<ul class="parent-node">
-			<li class="node"th:each="dto1:${list}" th:if="${#strings.isEmpty(dto1.parentOrgUnitId)}" >
+			<li class="node"th:each="dto1:${naverList}" th:if="${#strings.isEmpty(dto1.parentOrgUnitId)}" >
 				<a th:text="${dto1.orgUnitName}"></a>
 				<ol class="group">
-					<li class="tree-node node" th:each="dto2:${list}" th:if="${dto1.orgUnitId eq dto2.parentOrgUnitId}" >
+					<li class="tree-node node" th:each="dto2:${naverList}" th:if="${dto1.orgUnitId eq dto2.parentOrgUnitId}" >
 						<a th:text="${dto2.orgUnitName}" ></a>
 						<ul class="group">
-							<li class="tree-node node" th:each="dto3:${list}"  th:if="${dto2.orgUnitId eq dto3.parentOrgUnitId}">
+							<li class="tree-node node" th:each="dto3:${naverList}"  th:if="${dto2.orgUnitId eq dto3.parentOrgUnitId}">
 								<a th:text="${dto3.orgUnitName}"></a>
 							</li>
 						</ul>
