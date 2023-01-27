@@ -1,11 +1,18 @@
 @charset "UTF-8";
 
+main{
+	max-height: 105vh;
+    overflow: auto;
+    width: 100%;
+}
 
 header>.wrap{
-	background-color: #464964;
+	background-color: #03bb85;
 	color: #fff;
-	padding: 10px 20px;
-	height: 100vh;
+	padding: 0px 20px 10px;
+	height: 105vh;
+	min-width:200px;
+	box-shadow: 6px 0 3px rgb(0, 23, 13, 20%);
 }
 header>.wrap a{
 	color: #fff;
@@ -36,7 +43,8 @@ header>.wrap ul>li dl>dd{
 header>.wrap ul>li dl>dd>a{
 	text-decoration-line: none;	
 }
-main>.wrap{
+header>.wrap{
 	padding-top: 30px;
 	padding-left: 20px;
+	margin: 0;
 }
